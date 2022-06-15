@@ -1,0 +1,40 @@
+name: Build Container
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  example:
+    name: Terragrunt interaction
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v1.1.0
+        with:
+          terragrunt_version: latest
+      - name: Interact with Terragrunt
+        run: terragrunt --version
+
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v1.1.0
+        with:
+          terragrunt_version: 0.31.8
+
+      - name: Install tfswitch
+        run: |
+          sudo curl -O https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh
+          sudo chmod +x install.sh
+          sudo ./install.sh
+      - name: Set required Terraform version
+        run: |
+          terraform_version=$(grep required_version terragrunt.hcl | grep -o "\".*" | tr -d "\"= ")
+          echo "Switching to Terraform version: $terraform_version"
+          tfswitch $terraform_version
+          terraform -version
+      - name: Run script
+        run: |
+          cd $SERVICE_PATH && terragrunt init && terragrunt apply -auto-approve
