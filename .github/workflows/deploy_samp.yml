@@ -22,7 +22,7 @@ jobs:
       - name: Setup Terragrunt
         uses: autero1/action-terragrunt@v1.1.0
         with:
-          terragrunt_version: 0.31.8
+          terragrunt_version: latest
 
       - name: Install tfswitch
         run: |
@@ -35,6 +35,3 @@ jobs:
           echo "Switching to Terraform version: $terraform_version"
           tfswitch $terraform_version
           terraform -version
-      - name: Run script
-        run: |
-          cd $SERVICE_PATH && terragrunt init && terragrunt apply -auto-approve
