@@ -31,7 +31,7 @@ jobs:
           sudo ./install.sh
       - name: Set required Terraform version
         run: |
-          terraform_version=$(grep required_version terragrunt.hcl | grep -o "\".*" | tr -d "\"= ")
+          terraform_version=$(grep required_version terragrunt.hcl | grep pattern file | tail -1)
           echo "Switching to Terraform version: $terraform_version"
           tfswitch $terraform_version
           terraform -version
