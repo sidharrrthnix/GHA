@@ -12,17 +12,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: terraform version
+        run: terraform -version
       - name: Setup Terragrunt
         uses: autero1/action-terragrunt@v1.1.0
         with:
           terragrunt_version: latest
       - name: Interact with Terragrunt
-        run: terragrunt --version
-
+        run: |
+          terragrunt --version 
+          terraform -version
       - name: Setup Terragrunt
         uses: autero1/action-terragrunt@v1.1.0
         with:
-          terragrunt_version: 0.31.8
+          terragrunt_version: latest
 
       - name: Install tfswitch
         run: |
@@ -31,7 +34,7 @@ jobs:
           sudo ./install.sh
       - name: Set required Terraform version
         run: |
-          terraform_version=$(grep required_version terragrunt.hcl | grep pattern file | tail -1)
+          terraform_version=1.2.2
           echo "Switching to Terraform version: $terraform_version"
           tfswitch $terraform_version
           terraform -version
