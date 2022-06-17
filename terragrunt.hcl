@@ -3,7 +3,7 @@ generate tfversion {
     if_exists = "overwrite_terragrunt"
     contents = <<EOF
 terraform {
-    required_version = "= 1.2.2"
+    required_version = "= 1.2.3"
 }
     EOF
 }
