@@ -14,10 +14,12 @@ jobs:
         uses: actions/checkout@v2
       - name: custom terraform
         run: |
-          wget https://releases.hashicorp.com/terraform/1.1.9/terraform_1.1.9_linux_amd64.zip 
-          unzip terraform_1.1.9_linux_amd64.zip
-          mv terraform /usr/local/bin/terraform
-          terraform --version
+          terraform_version=$(grep required_version terragrunt.hcl | grep -o "\".*" | tr -d "\"= ")
+           wget https://releases.hashicorp.com/terraform/$terraform_version/terraform_$terraform_version_linux_amd64.zip 
+           unzip terraform_$terraform_version_linux_amd64.zip
+           rm terraform_$terraform_version_linux_amd64.zip
+           mv terraform /usr/local/bin/terraform
+           echo " Terraform version: $terraform_version"
 
       - name: Setup Terragrunt
         uses: autero1/action-terragrunt@v1.1.0
@@ -32,14 +34,14 @@ jobs:
         with:
           terragrunt_version: latest
 
-      - name: Install tfswitch
-        run: |
-          sudo curl -O https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh
-          sudo chmod +x install.sh
-          sudo ./install.sh
-      - name: Set required Terraform version
-        run: |
-          terraform_version=1.2.2
-          echo "Switching to Terraform version: $terraform_version"
-          tfswitch $terraform_version
-          terraform -version
+      # - name: Install tfswitch
+      #   run: |
+      #     sudo curl -O https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh
+      #     sudo chmod +x install.sh
+      #     sudo ./install.sh
+      # - name: Set required Terraform version
+      #   run: |
+      #     terraform_version=1.2.2
+      #     echo "Switching to Terraform version: $terraform_version"
+      #     tfswitch $terraform_version
+      #     terraform -version
