@@ -17,11 +17,11 @@ jobs:
       - name: custom terraform
         run: |
 
-          wget https://releases.hashicorp.com/terraform/$TERRAFORM_VERSION/terraform_$TERRAFORM_VERSION_linux_amd64.zip 
-          unzip terraform_$TERRAFORM_VERSION_linux_amd64.zip
-          rm terraform_$TERRAFORM_VERSION_linux_amd64.zip
+          wget https://releases.hashicorp.com/terraform/${{ env.TERRAFORM_VERSION}}/terraform_${{ env.TERRAFORM_VERSION}}_linux_amd64.zip 
+          unzip terraform_${{ env.TERRAFORM_VERSION}}_linux_amd64.zip
+          rm terraform_${{ env.TERRAFORM_VERSION}}_linux_amd64.zip
           mv terraform /usr/local/bin/terraform
-          echo " Terraform version: $TERRAFORM_VERSION"
+          echo "Terraform version: ${{ env.TERRAFORM_VERSION}}"
 
       - name: Setup Terragrunt
         uses: autero1/action-terragrunt@v1.1.0
